@@ -58,3 +58,8 @@ minetest.register_on_joinplayer(function(player, last_login)
     -- Formspec
     player:set_inventory_formspec(inventory_formspec)
 end)
+
+minetest.register_item(":", {
+    type = "none",
+    range = 15.0,
+})
