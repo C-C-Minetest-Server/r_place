@@ -1,0 +1,12 @@
+# textdomain: rp_moderation
+
+### init.lua ###
+Are you sure you want to @1? Type /mod_y to confirm, or /mod_n to cancel.=
+Confirm moderation action=
+No queued job.=
+Cancel moderation action=
+Job cancled.=
+Remove all nodes placed by a player=
+<player name>=
+erase all nodes placed by @1=
+Erased @1 (@2%) nodes.=

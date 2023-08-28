@@ -4,5 +4,3 @@
 Welcome to rPlace Minetest Server!=歡迎來到 rPlace Minetest 伺服器！
 Here, you can place pixels to form pictures!=您可以在這裏創作像素畫作！
 All colors are in your inventory; Press `I` to put them onto the hotbar.=所有顏色均在您的物品欄中；按「I」以放置在首選欄上。
-Rightclick with a color node to override one pixel.=使用顏色方塊右鍵點擊可覆蓋一像素。
-Punch an existing node to select it into your active slot.=擊打現有顏色方塊可以將之放置於您的手上。

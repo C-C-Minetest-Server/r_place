@@ -6,4 +6,5 @@ Map reset done.=
 
 ### placement.lua ###
 Disable build delay=
+@1 seconds left=
 Placed by: @1=

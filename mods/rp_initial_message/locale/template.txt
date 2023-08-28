@@ -4,3 +4,5 @@
 Welcome to rPlace Minetest Server!=
 Here, you can place pixels to form pictures!=
 All colors are in your inventory; Press `I` to put them onto the hotbar.=
+Rightclick with a color node to override one pixel.=
+Punch an existing node to select it into your active slot.=

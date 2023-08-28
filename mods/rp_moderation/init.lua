@@ -57,6 +57,7 @@ end)
 
 minetest.register_chatcommand("mod_rm_player", {
     description = S("Remove all nodes placed by a player"),
+    params = S("<player name>"),
     privs = {ban = true},
     func = function(name, param)
         return do_confirm(name, S("erase all nodes placed by @1",param), function()

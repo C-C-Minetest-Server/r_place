@@ -1,0 +1,12 @@
+# textdomain: rp_moderation
+
+### init.lua ###
+Are you sure you want to @1? Type /mod_y to confirm, or /mod_n to cancel.=您是否確定@1？輸入 /mod_y 確認，或 /mod_n 取消。
+Confirm moderation action=確定管理操作
+No queued job.=沒有正在等待的操作。
+Cancel moderation action=取消管理操作
+Job cancled.=操作已取消。
+Remove all nodes placed by a player=移除由某一玩家擺放的所有方塊
+<player name>=<玩家名稱>
+erase all nodes placed by @1=移除由 @1 擺放的所有方塊
+Erased @1 (@2%) nodes.=已移除 @1 (@2%) 個方塊。

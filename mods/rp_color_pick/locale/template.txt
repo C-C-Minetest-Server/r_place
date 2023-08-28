@@ -1,0 +1,4 @@
+# textdomain: rp_color_pick
+
+### init.lua ###
+Picked @1=

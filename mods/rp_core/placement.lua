@@ -54,7 +54,7 @@ local function hud_loop()
         local time_left = 0
         if deny[name] then
             time_left = time_delay + (deny[name] - now)
-            text = string.format("%d seconds left", time_left)
+            text = S("@1 seconds left", time_left)
         end
         if not delay_hud[name] then
             delay_hud[name] = player:hud_add({
