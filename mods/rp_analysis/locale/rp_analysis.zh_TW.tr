@@ -1,0 +1,12 @@
+# textdomain: rp_analysis
+
+### init.lua ###
+Force update analysis cache=強制更新數據分析緩存
+Done.=完成。
+Get per-player analysis=取得玩家分析
+Per-player analysis=玩家分析
+Unknown=不明
+Total: @1=共有：@1
+List end=列表完結
+Get per-color analysis=取得顏色分析
+Per-color analysis=顏色分析
