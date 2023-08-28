@@ -70,5 +70,7 @@ for hex, name in pairs(rp_nodes.colors) do
         is_ground_content = false,
         node_placement_prediction = "",
         on_place = on_place,
+        paramtype = "light",
+        light_source = minetest.LIGHT_MAX,
     })
 end
