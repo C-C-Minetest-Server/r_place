@@ -1,9 +1,5 @@
 # textdomain: rp_core
 
-### commands.lua ###
-Reset the area=重設區域
-Map reset done.=區域重設完成。
-
 ### placement.lua ###
 Disable build delay=禁用建築延遲
 @1 seconds left=尚餘 @1 秒

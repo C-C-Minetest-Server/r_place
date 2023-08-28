@@ -10,3 +10,6 @@ Remove all nodes placed by a player=移除由某一玩家擺放的所有方塊
 <player name>=<玩家名稱>
 erase all nodes placed by @1=移除由 @1 擺放的所有方塊
 Erased @1 (@2%) nodes.=已移除 @1 (@2%) 個方塊。
+Reset the area=重設區域
+erase the entire map=重設整張地圖
+Map reset done.=區域重設完成。

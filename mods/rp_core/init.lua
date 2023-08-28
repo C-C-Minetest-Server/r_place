@@ -31,8 +31,7 @@ local scripts = {
     "player",
     "mapgen",
     "border",
-    "placement",
-    "commands",
+    "placement"
 }
 
 for _,n in ipairs(scripts) do

@@ -1,9 +1,5 @@
 # textdomain: rp_core
 
-### commands.lua ###
-Reset the area=
-Map reset done.=
-
 ### placement.lua ###
 Disable build delay=
 @1 seconds left=

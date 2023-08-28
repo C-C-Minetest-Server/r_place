@@ -79,3 +79,50 @@ minetest.register_chatcommand("mod_rm_player", {
         end)
     end
 })
+
+do
+    local CONTENT_IGNORE = minetest.CONTENT_IGNORE
+    local CONTENT_FILL   = minetest.get_content_id("rp_mapgen_nodes:default_fill")
+
+    minetest.register_chatcommand("mod_reset",{
+        description = S("Reset the area"),
+        privs = {server = true},
+        func = function(name,param)
+            return do_confirm(name, S("erase the entire map"), function()
+                local VM = VoxelManip()
+                local minp, maxp = VM:read_from_map(
+                    {
+                        x = rp_core.area[1][1],
+                        y = 1,
+                        z = rp_core.area[1][2]
+                    }, {
+                        x = rp_core.area[2][1],
+                        y = 1,
+                        z = rp_core.area[2][2]
+                    })
+                local VA = VoxelArea(minp, maxp)
+                local data = {}
+                for i in VA:iterp(minp, maxp) do
+                    local pos = VA:position(i)
+                    if rp_core.in_area(pos) then
+                        data[i] = CONTENT_FILL
+                    else
+                        data[i] = CONTENT_IGNORE
+                    end
+                end
+
+                VM:set_data(data)
+                VM:write_to_map()
+
+                for x = rp_core.area[1][1], rp_core.area[2][1] do
+                    for z = rp_core.area[1][2], rp_core.area[2][2] do
+                        minetest.get_meta({x=x,y=1,z=z}):from_table({})
+                    end
+                end
+
+                minetest.after(0,minetest.fix_light,minp,maxp)
+                return true, minetest.colorize("orange", S("Map reset done."))
+            end)
+        end
+    })
+end

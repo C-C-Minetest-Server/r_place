@@ -10,3 +10,6 @@ Remove all nodes placed by a player=
 <player name>=
 erase all nodes placed by @1=
 Erased @1 (@2%) nodes.=
+Reset the area=
+erase the entire map=
+Map reset done.=
