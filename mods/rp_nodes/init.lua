@@ -72,5 +72,6 @@ for hex, name in pairs(rp_nodes.colors) do
         on_place = on_place,
         paramtype = "light",
         light_source = minetest.LIGHT_MAX,
+        on_drop = function(itemstack, dropper, pos) return itemstack end
     })
 end
