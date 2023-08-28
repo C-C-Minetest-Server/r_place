@@ -1,0 +1,10 @@
+# Position 1 of r_place.
+# Should in the format of (x,y).
+r_place.area_pos1 (Place area position 1) string (30,30)
+
+# Position 2 of r_place.
+# Should in the format of (x,y).
+r_place.area_pos2 (Place area position 2) string (-30,-30)
+
+# Delay between placements in seconds
+r_place.delay (Delay between placements) int 5

@@ -1,0 +1,12 @@
+{
+    "Lua.diagnostics.globals": [
+        "rp_nodes",
+        "minetest",
+        "rp_core",
+        "VoxelArea",
+        "vector",
+        "VoxelManip",
+        "dump",
+        "ItemStack"
+    ]
+}
