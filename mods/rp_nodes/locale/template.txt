@@ -1,0 +1,20 @@
+# textdomain: rp_nodes
+
+### init.lua ###
+White=
+Light grey=
+Dark grey=
+Black=
+Pink=
+Red=
+Orange=
+Brown=
+Yellow=
+Light green=
+Green=
+Cyan=
+Light blue=
+Blue=
+Dark pink=
+Magenta=
+@1 building block=

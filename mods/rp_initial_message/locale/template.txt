@@ -1,0 +1,6 @@
+# textdomain: rp_initial_message
+
+### init.lua ###
+Welcome to rPlace Minetest Server!=
+Here, you can place pixels to form pictures!=
+All colors are in your inventory; Press `I` to put them onto the hotbar.=

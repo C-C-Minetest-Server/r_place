@@ -1,0 +1,20 @@
+# textdomain: rp_nodes
+
+### init.lua ###
+White=白色
+Light grey=淺灰色
+Dark grey=深灰色
+Black=黑色
+Pink=粉色
+Red=紅色
+Orange=橙色
+Brown=棕色
+Yellow=黃色
+Light green=淺綠色
+Green=綠色
+Cyan=青色
+Light blue=淺藍色
+Blue=藍色
+Dark pink=深粉色
+Magenta=紫色
+@1 building block=@1建築方塊
