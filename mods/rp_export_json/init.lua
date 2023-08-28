@@ -41,7 +41,7 @@ local function save(callback)
         json_data.z_axis = (area[2][2] - area[1][2] + 1)
         json_data.map = {}
         local VA = VoxelArea(minp, maxp)
-        for z = area[2][2], area[1][2], -1 do
+        for z = area[1][2], area[2][2] do
             local x_data = {}
             for x = area[2][1], area[1][1], -1 do
                 local i = VA:index(x,1,z)
