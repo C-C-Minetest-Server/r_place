@@ -75,6 +75,12 @@ minetest.after(0,hud_loop)
 minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
     if not placer:is_player() then return true end
     local name = placer:get_player_name()
+
+    local meta = minetest.get_meta(pos)
+    meta:mark_as_private("placer") -- For performance
+    meta:set_string("placer",name)
+    meta:set_string("infotext",S("Placed by: @1",name))
+
     if deny_clear[name] then
         deny_clear[name]:cancel()
     end

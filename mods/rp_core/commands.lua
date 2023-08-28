@@ -54,8 +54,14 @@ do
             VM:set_data(data)
             VM:write_to_map()
 
+            for x = rp_core.area[1][1], rp_core.area[2][1] do
+                for z = rp_core.area[1][2], rp_core.area[2][2] do
+                    minetest.get_meta({x=x,y=1,z=z}):from_table({})
+                end
+            end
+
             minetest.after(0,minetest.fix_light,minp,maxp)
-            return true, "Map reset"
+            return true, S("Map reset done.")
         end
     })
 end

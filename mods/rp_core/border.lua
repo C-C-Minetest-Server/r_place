@@ -59,6 +59,18 @@ end
 
 rp_core.area = NEW_BORDER
 
+function rp_core.in_area(pos)
+    local x, y, z = pos.x, pos.y, pos.z
+    if y ~= 1
+    or x < rp_core.area[1][1]
+    or x > rp_core.area[2][1]
+    or z < rp_core.area[1][2]
+    or z > rp_core.area[2][2] then
+        return false
+    end
+    return true
+end
+
 minetest.after(0,function()
     do -- Clear old barrier and remove out-of-range nodes
         local CACHE_PATH = WP .. "/" .. "rp_core_border_cache"
@@ -77,10 +89,7 @@ minetest.after(0,function()
                 -- Remove building nodes
                 for x = OLD_BORDER[1][1], OLD_BORDER[2][1], 1 do
                     for z = OLD_BORDER[1][2], OLD_BORDER[2][2], 1 do
-                        if x < NEW_BORDER[1][1]
-                        or x > NEW_BORDER[2][1]
-                        or z < NEW_BORDER[1][2]
-                        or z > NEW_BORDER[2][2] then
+                        if not rp_core.in_area(vector.new(x,1,z)) then
                             table.insert(remove_queue,{x,z})
                         end
                     end
@@ -169,15 +178,3 @@ minetest.after(0,function()
         minetest.after(1,minetest.fix_light,pmin,pmax)
     end
 end)
-
-function rp_core.in_area(pos)
-    local x, y, z = pos.x, pos.y, pos.z
-    if y ~= 1
-    or x < rp_core.area[1][1]
-    or x > rp_core.area[2][1]
-    or z < rp_core.area[1][2]
-    or z > rp_core.area[2][2] then
-        return false
-    end
-    return true
-end
