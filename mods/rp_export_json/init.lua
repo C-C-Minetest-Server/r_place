@@ -19,9 +19,10 @@
     USA
 ]]
 
+local S = minetest.get_translator("rp_export_json")
 local color_map = {}
 for hex, _ in pairs(rp_nodes.colors) do
-    color_map[minetest.get_content_id("rp_nodes:color_" .. hex)] = hex
+    color_map[minetest.get_content_id("rp_nodes:color_" .. hex)] = tonumber(hex, 16)
 end
 
 local function save(callback)
@@ -40,12 +41,14 @@ local function save(callback)
         json_data.z_axis = (area[2][2] - area[1][2] + 1)
         json_data.map = {}
         local VA = VoxelArea(minp, maxp)
-        for z = area[2][1], area[2][2] do
-            for x = area[1][1], area[1][2] do
+        for z = area[1][2], area[2][2] do
+            local x_data = {}
+            for x = area[1][1], area[2][1] do
                 local i = VA:index(x,1,z)
                 local id = data[i]
-                json_data.map[#json_data.map+1] = color_map[id] or ""
+                x_data[#x_data+1] = color_map[id] or 0
             end
+            json_data.map[#json_data.map+1] = x_data
         end
         
         local json = minetest.write_json(json_data)
@@ -53,7 +56,9 @@ local function save(callback)
         minetest.safe_file_write(WP .. "/r_place.json", json)
     end, function(...)
         minetest.log("action","[rp_export_json] Done saving to JSON")
-        callback(...)
+        if callback then
+            callback(...)
+        end
     end, color_map, rp_core.area, data, minp, maxp)
 end
 
@@ -64,3 +69,12 @@ local function loop()
 end
 
 minetest.after(1,loop)
+
+minetest.register_chatcommand("json_force_export", {
+    description = S("Forcely start export to JSON job"),
+    privs = {server = true},
+    func = function(name, param)
+        save()
+        return true, minetest.colorize("orange", S("Job started."))
+    end
+})
