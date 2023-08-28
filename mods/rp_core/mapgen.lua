@@ -37,6 +37,7 @@ minetest.register_on_generated(function(minp,maxp,seed)
 	end
 
 	vm:set_data(data)
+    vm:set_lighting({day = 15, night = 15})
 	vm:calc_lighting()
 	vm:write_to_map(data)
 end)
