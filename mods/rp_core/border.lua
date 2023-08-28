@@ -58,6 +58,7 @@ do
 end
 
 rp_core.area = NEW_BORDER
+rp_core.area_size = (rp_core.area[2][1] - rp_core.area[1][1] + 1) * (rp_core.area[2][2] - rp_core.area[1][2] + 1)
 
 function rp_core.in_area(pos)
     local x, y, z = pos.x, pos.y, pos.z

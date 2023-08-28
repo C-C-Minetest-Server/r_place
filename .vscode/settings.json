@@ -7,6 +7,7 @@
         "vector",
         "VoxelManip",
         "dump",
-        "ItemStack"
+        "ItemStack",
+        "rp_analysis"
     ]
 }

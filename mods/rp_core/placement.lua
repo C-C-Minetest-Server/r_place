@@ -24,6 +24,7 @@ local deny_clear = {}
 local delay_hud = {}
 
 rp_core.time_delay = tonumber(minetest.settings:get("r_place.delay") or "5") or 5
+rp_core.wear_show_delay = minetest.settings:get_bool("r_place.wear_show_delay", false)
 local time_delay = rp_core.time_delay
 
 local S = minetest.get_translator("rp_core")
@@ -50,8 +51,10 @@ local function hud_loop()
     for _, player in pairs(minetest.get_connected_players()) do
         local name = player:get_player_name()
         local text = ""
+        local time_left = 0
         if deny[name] then
-            text = string.format("%d seconds left", time_delay + (deny[name] - now))
+            time_left = time_delay + (deny[name] - now)
+            text = string.format("%d seconds left", time_left)
         end
         if not delay_hud[name] then
             delay_hud[name] = player:hud_add({
