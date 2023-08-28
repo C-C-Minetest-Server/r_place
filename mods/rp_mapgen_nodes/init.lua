@@ -30,17 +30,6 @@ minetest.register_node("rp_mapgen_nodes:transparent_ground", {
     damage_per_second = math.huge,
 })
 
-minetest.register_node("rp_mapgen_nodes:noplace", {
-    description = "(Hack!) Place blocker",
-    drawtype = "airlike",
-    paramtype = "light",
-    sunlight_propagates = true,
-    pointable = false,
-    diggable = false,
-    walkable = true,
-    is_ground_content = true,
-})
-
 minetest.register_node("rp_mapgen_nodes:border", {
     description = "(Hack!) Area Border",
     tiles = {"rp_nodes_base.png^[colorize:#000000:255"},
@@ -52,3 +41,8 @@ minetest.register_node("rp_mapgen_nodes:border", {
 
 -- Black
 minetest.register_alias("rp_mapgen_nodes:default_fill","rp_nodes:color_222222")
+
+-- Avoid warning
+minetest.register_alias("mapgen_stone","air")
+minetest.register_alias("mapgen_water_source","air")
+minetest.register_alias("mapgen_river_water_source","air")
