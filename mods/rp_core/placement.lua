@@ -46,7 +46,7 @@ do
     end
 end
 
-local function hud_loop()
+rp_utils.every_n_seconds(0.5, function()
     local now = os.time()
     for _, player in pairs(minetest.get_connected_players()) do
         local name = player:get_player_name()
@@ -69,9 +69,7 @@ local function hud_loop()
             player:hud_change(delay_hud[name], "text", text)
         end
     end
-    minetest.after(0.5,hud_loop)
-end
-minetest.after(0,hud_loop)
+end)
 
 
 minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)

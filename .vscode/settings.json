@@ -8,7 +8,8 @@
         "VoxelManip",
         "dump",
         "ItemStack",
-        "rp_analysis"
+        "rp_analysis",
+        "rp_utils"
     ],
     "workspace.ignoreDir": [
         ".vscode",

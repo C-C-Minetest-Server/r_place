@@ -59,6 +59,34 @@ minetest.register_on_joinplayer(function(player, last_login)
     player:set_inventory_formspec(inventory_formspec)
 end)
 
+rp_utils.every_n_seconds(5, function()
+    for _, player in pairs(minetest.get_connected_players()) do
+        local pos = player:get_pos()
+        local altered = false
+        if pos.y < -5 then
+            pos.y = 5
+            altered = true
+        end
+        if pos.x < (rp_core.area[1][1] - 10) then
+            pos.x = rp_core.area[1][1] - 5
+            altered = true
+        elseif pos.x > (rp_core.area[2][1] + 10) then
+            pos.x = rp_core.area[2][1] + 5
+            altered = true
+        end
+        if pos.y < (rp_core.area[1][2] - 10) then
+            pos.y = rp_core.area[1][2] - 5
+            altered = true
+        elseif pos.y > (rp_core.area[2][2] + 10) then
+            pos.y = rp_core.area[2][2] + 5
+            altered = true
+        end
+        if altered then
+            player:set_pos(pos)
+        end
+    end
+end)
+
 minetest.override_item("", {
     range = 15.0,
 })

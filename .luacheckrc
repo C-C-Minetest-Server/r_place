@@ -16,7 +16,7 @@ globals = {
 
 	"minetest", "core",
 
-	"rp_core", "rp_nodes", "rp_analysis", 
+	"rp_core", "rp_nodes", "rp_analysis", "rp_utils"
 }
 
 exclude_files = {

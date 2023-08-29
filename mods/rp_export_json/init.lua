@@ -62,6 +62,7 @@ local function save(callback)
     end, color_map, rp_core.area, data, minp, maxp)
 end
 
+-- Involves async - do not use rp_utils!
 local function loop()
     save(function()
         minetest.after(60, loop)
