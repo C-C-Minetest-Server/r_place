@@ -1,0 +1,48 @@
+<html>
+
+<head>
+	<style type="text/css">
+		* {
+			background-color: #222;
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		canvas {
+			width: 90vmin;
+			height: 90vmin;
+			image-rendering: crisp-edges;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			box-shadow: 0 0 5vmin #444;
+		}
+	</style>
+</head>
+
+<body>
+	<canvas id="mt-r-place-viewer"></canvas>
+	<script>
+		const url = "r_place.json";
+		const canvas = document.getElementById("mt-r-place-viewer");
+		const draw = () => fetch(url)
+			.then(resp => resp.json())
+			.then(data => {
+				canvas.width = data.x_axis;
+				canvas.height = data.z_axis;
+				var ctx = canvas.getContext("2d");
+				var img = new Image();
+				for (var i = 0; i < data.z_axis; i++) {
+					for (var j = 0; j < data.x_axis; j++) {
+						ctx.fillStyle = "#" + Math.floor(data.map[i][j]).toString(16);
+						ctx.fillRect(data.x_axis - j, data.z_axis - i, 1, 1);
+					}
+				}
+			});
+		draw();
+		setInterval(draw, 60000);
+	</script>
+</body>
+
