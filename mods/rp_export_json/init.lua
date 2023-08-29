@@ -64,7 +64,7 @@ end
 
 local function loop()
     save(function()
-        minetest.after(60, save)
+        minetest.after(60, loop)
     end)
 end
 
