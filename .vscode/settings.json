@@ -11,7 +11,7 @@
         "rp_analysis",
         "rp_utils"
     ],
-    "workspace.ignoreDir": [
+    "Lua.workspace.ignoreDir": [
         ".vscode",
         "utils"
     ]
