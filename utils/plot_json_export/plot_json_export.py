@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import json, numpy as np, matplotlib.pyplot as plt
+import orjson, numpy as np, matplotlib.pyplot as plt
 
 def color_int2tuple(colorint):
     # https://stackoverflow.com/a/2262152, License https://creativecommons.org/licenses/by-sa/2.5/
@@ -12,13 +12,13 @@ def main(argv):
         return 1
     filename = argv[1]
     try:
-        file = open(filename, "r")
+        file = open(filename, "rb")
     except IOError:
         print("Error opening file.")
         raise
     else:
         with file:
-            data = json.load(file)
+            data = orjson.loads(file.read())
     assert "map" in data, "Invalid JSON savefile format"
     plts = np.array(tuple(tuple(color_int2tuple(int(c)) for c in r) for r in data["map"]), dtype=np.uint8)
     if len(argv) >= 3:
@@ -34,11 +34,11 @@ def main(argv):
             plts = np.rot90(plts, axes = (0,1))
         case "-90" | "270" | "+270":
             plts = np.rot90(plts, k = -1, axes = (0,1))
+    plt.figure(facecolor=(0, 0, 0))
     plt.imshow(plts)
-    try:
-        plt.show()
-    except KeyboardInterrupt:
-        pass
+    plt.axis('off')
+    plt.savefig('out.png', bbox_inches='tight')
+    print("Image saved at out.png.")
     return 0
 
 if __name__ == "__main__":
