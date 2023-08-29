@@ -34,9 +34,11 @@ def main(argv):
             plts = np.rot90(plts, axes = (0,1))
         case "-90" | "270" | "+270":
             plts = np.rot90(plts, k = -1, axes = (0,1))
-    print(plts)
     plt.imshow(plts)
-    plt.show()
+    try:
+        plt.show()
+    except KeyboardInterrupt:
+        pass
     return 0
 
 if __name__ == "__main__":
