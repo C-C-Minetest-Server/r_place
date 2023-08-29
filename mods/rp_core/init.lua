@@ -28,9 +28,9 @@ end
 local MP = minetest.get_modpath("rp_core")
 
 local scripts = {
-    "player",
     "mapgen",
     "border",
+    "player",
     "placement"
 }
 

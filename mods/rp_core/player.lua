@@ -35,16 +35,48 @@ local inventory_formspec = table.concat({
     "list[current_player;main;0,0;8,4;]"
 }, "")
 
-minetest.register_on_joinplayer(function(player, last_login)
-    local name = player:get_player_name()
+local function check_pos(pos)
+    pos = vector.copy(pos)
+    local altered = false
+    if pos.y <= 1 then
+        pos.y = 5
+        altered = true
+    end
+    if pos.x < (rp_core.area[1][1] - 10) then
+        pos.x = rp_core.area[1][1] - 5
+        altered = true
+    elseif pos.x > (rp_core.area[2][1] + 10) then
+        pos.x = rp_core.area[2][1] + 5
+        altered = true
+    end
+    if pos.y < (rp_core.area[1][2] - 10) then
+        pos.y = rp_core.area[1][2] - 5
+        altered = true
+    elseif pos.y > (rp_core.area[2][2] + 10) then
+        pos.y = rp_core.area[2][2] + 5
+        altered = true
+    end
+    return pos, altered
+end
 
-    -- Spawnpoint
-    local spawn_pos = {
+local spawnpoint = minetest.settings:get("static_spawnpoint")
+if spawnpoint and spawnpoint ~= "" then
+    spawnpoint = vector.from_string(spawnpoint)
+    spawnpoint = check_pos(spawnpoint)
+end
+if not(spawnpoint and spawnpoint ~= "") then
+    spawnpoint = {
         x = (rp_core.area[1][1] + rp_core.area[2][1]) / 2,
         y = 10,
         z = (rp_core.area[1][2] + rp_core.area[2][2]) / 2
     }
-    player:set_pos(spawn_pos)
+end
+
+minetest.register_on_joinplayer(function(player, last_login)
+    local name = player:get_player_name()
+
+    -- Spawnpoint
+    player:set_pos(spawnpoint)
 
     -- Fly
     local privs = minetest.get_player_privs(name)
@@ -62,27 +94,10 @@ end)
 rp_utils.every_n_seconds(5, function()
     for _, player in pairs(minetest.get_connected_players()) do
         local pos = player:get_pos()
-        local altered = false
-        if pos.y < -5 then
-            pos.y = 5
-            altered = true
-        end
-        if pos.x < (rp_core.area[1][1] - 10) then
-            pos.x = rp_core.area[1][1] - 5
-            altered = true
-        elseif pos.x > (rp_core.area[2][1] + 10) then
-            pos.x = rp_core.area[2][1] + 5
-            altered = true
-        end
-        if pos.y < (rp_core.area[1][2] - 10) then
-            pos.y = rp_core.area[1][2] - 5
-            altered = true
-        elseif pos.y > (rp_core.area[2][2] + 10) then
-            pos.y = rp_core.area[2][2] + 5
-            altered = true
-        end
+        local npos, altered = check_pos(pos)
+        
         if altered then
-            player:set_pos(pos)
+            player:set_pos(npos)
         end
     end
 end)
