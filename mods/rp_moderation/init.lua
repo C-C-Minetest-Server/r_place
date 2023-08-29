@@ -24,7 +24,8 @@ local S = minetest.get_translator("rp_moderation")
 local confirm_queue = {}
 local function do_confirm(name, action, func)
     confirm_queue[name] = func
-    return true, minetest.colorize("orange", S("Are you sure you want to @1? Type /mod_y to confirm, or /mod_n to cancel.",action))
+    return true, minetest.colorize("orange",
+        S("Are you sure you want to @1? Type /mod_y to confirm, or /mod_n to cancel.",action))
 end
 
 minetest.register_chatcommand("mod_y", {

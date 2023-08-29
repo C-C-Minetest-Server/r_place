@@ -90,7 +90,7 @@ minetest.register_chatcommand("anal_color", {
         local rstr = "--- " .. S("Per-color analysis") .. " ---\n"
         for nname, count in pairs(cache.by_color) do
             local def = minetest.registered_nodes[nname]
-            if def then 
+            if def then
                 local percent = (count / rp_core.area_size) * 100
                 rstr = rstr .. string.format("%s: %d (%.1d%%)", def.description, count, percent) .. "\n"
             end

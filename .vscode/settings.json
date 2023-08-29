@@ -9,5 +9,9 @@
         "dump",
         "ItemStack",
         "rp_analysis"
+    ],
+    "workspace.ignoreDir": [
+        ".vscode",
+        "utils"
     ]
 }

@@ -35,7 +35,7 @@ local function save(callback)
     local data = VM:get_data()
 
     ---@diagnostic disable-next-line: redefined-local
-    minetest.handle_async(function(color_map, area, data, minp, maxp)
+    minetest.handle_async(function(color_map, area, data, minp, maxp) -- luacheck: ignore 431
         local json_data = {}
         json_data.x_axis = (area[2][1] - area[1][1] + 1)
         json_data.z_axis = (area[2][2] - area[1][2] + 1)
@@ -50,7 +50,7 @@ local function save(callback)
             end
             json_data.map[#json_data.map+1] = x_data
         end
-        
+
         local json = minetest.write_json(json_data)
         local WP = minetest.get_worldpath()
         minetest.safe_file_write(WP .. "/r_place.json", json)
