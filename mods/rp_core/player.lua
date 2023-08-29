@@ -95,7 +95,7 @@ rp_utils.every_n_seconds(5, function()
     for _, player in pairs(minetest.get_connected_players()) do
         local pos = player:get_pos()
         local npos, altered = check_pos(pos)
-        
+
         if altered then
             player:set_pos(npos)
         end
