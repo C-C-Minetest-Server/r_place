@@ -58,18 +58,14 @@ do
 end
 
 rp_core.area = NEW_BORDER
+rp_core.area_vector = {
+    vector.new(rp_core.area[1][1], 1, rp_core.area[1][2]),
+    vector.new(rp_core.area[2][1], 1, rp_core.area[2][2]),
+}
 rp_core.area_size = (rp_core.area[2][1] - rp_core.area[1][1] + 1) * (rp_core.area[2][2] - rp_core.area[1][2] + 1)
 
 function rp_core.in_area(pos)
-    local x, y, z = pos.x, pos.y, pos.z
-    if y ~= 1
-    or x < rp_core.area[1][1]
-    or x > rp_core.area[2][1]
-    or z < rp_core.area[1][2]
-    or z > rp_core.area[2][2] then
-        return false
-    end
-    return true
+    return vector.in_area(pos, rp_core.area_vector[1], rp_core.area_vector[2])
 end
 
 minetest.after(0,function()

@@ -2,14 +2,28 @@
 
 ### init.lua ###
 Are you sure you want to @1? Type /mod_y to confirm, or /mod_n to cancel.=您是否確定@1？輸入 /mod_y 確認，或 /mod_n 取消。
+Select @1 coordinates by punching nodes, /mod_here to set it to your position, or /mod_n to cancel.=
 Confirm moderation action=確定管理操作
 No queued job.=沒有正在等待的操作。
 Cancel moderation action=取消管理操作
 Job cancled.=操作已取消。
+Pick the current position=選擇目前座標
+Invalid position selected.=所選座標無效。
+Got position: @1=獲取座標：@1
 Remove all nodes placed by a player=移除由某一玩家擺放的所有方塊
 <player name>=<玩家名稱>
+Player name can't be blank.=玩家名稱不可爲空。
 erase all nodes placed by @1=移除由 @1 擺放的所有方塊
 Erased @1 (@2%) nodes.=已移除 @1 (@2%) 個方塊。
 Reset the area=重設區域
 erase the entire map=重設整張地圖
 Map reset done.=區域重設完成。
+Remove nodes within a range=移除範圍內的方塊。
+remove nodes within the range @1 to @2=移除 @1 到 @1 之內的方塊。
+Removed nodes in range.=已移除範圍內的方塊。
+Replace nodes within a range to a specific color=將範圍內的方塊覆蓋成指定顏色
+List of node colors=方塊顏色列表
+List end=列表完結
+Color node "@1" not found. Try /mod_set_color list=找不到顏色方塊「@1」。嘗試運行 /mod_set_color list
+replace nodes within the range @1 to @2 by @3=覆蓋 @1 到 @1 之內的方塊爲@3
+Replaced nodes in range.=已覆蓋範圍內的方塊。

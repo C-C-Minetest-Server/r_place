@@ -2,14 +2,28 @@
 
 ### init.lua ###
 Are you sure you want to @1? Type /mod_y to confirm, or /mod_n to cancel.=
+Select @1 coordinates by punching nodes, /mod_here to set it to your position, or /mod_n to cancel.=
 Confirm moderation action=
 No queued job.=
 Cancel moderation action=
 Job cancled.=
+Pick the current position=
+Invalid position selected.=
+Got position: @1=
 Remove all nodes placed by a player=
 <player name>=
+Player name can't be blank.=
 erase all nodes placed by @1=
 Erased @1 (@2%) nodes.=
 Reset the area=
 erase the entire map=
 Map reset done.=
+Remove nodes within a range=
+remove nodes within the range @1 to @2=
+Removed nodes in range.=
+Replace nodes within a range to a specific color=
+List of node colors=
+List end=
+Color node "@1" not found. Try /mod_set_color list=
+replace nodes within the range @1 to @2 by @3=
+Replaced nodes in range.=
