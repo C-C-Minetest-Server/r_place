@@ -22,34 +22,54 @@
 local S = minetest.get_translator("rp_moderation")
 
 local confirm_queue = {}
-local function do_confirm(name, action, func)
-    confirm_queue[name] = func
+local function do_confirm(name, action, func, cancel)
+    confirm_queue[name] = {func, cancel}
     return true, minetest.colorize("orange",
         S("Are you sure you want to @1? Type /mod_y to confirm, or /mod_n to cancel.",action))
 end
 
 local get_pos_queue = {}
-local function do_get_pos(name, how_many, func)
+local function do_get_pos_confirm(name, action, how_many, func)
     get_pos_queue[name] = {
         pos = {},
         func = func,
-        how_many = how_many
+        how_many = how_many,
+        action = action
     }
     return true, minetest.colorize("orange",
         S("Select @1 coordinates by punching nodes, " ..
           "/mod_here to set it to your position, or /mod_n to cancel.", how_many))
 end
 
-local function wrap_send_player(name, func, ...)
-    local status, msg = func(...)
-    minetest.chat_send_player(name, msg)
+local pos_particlespawner = {}
+local function pos_spawn_particlespawners(name, pos1, pos2)
+    pos1, pos2 = vector.sort(pos1, pos2)
+    pos1 = vector.offset(pos1, -0.3, 0.6, -0.3)
+    pos2 = vector.offset(pos2, 0.3, 0.6, 0.3)
+    local area = (pos1.x - pos2.x + 1) * (pos1.y - pos2.y + 1) * (pos1.z - pos2.z + 1) 
+    pos_particlespawner[name] = minetest.add_particlespawner({
+        amount = area * 25,
+        time = 0,
+        minpos = pos1,
+        maxpos = pos2,
+        minacc = {x=0, y=-10, z=0},
+        maxacc = {x=0, y=-13, z=0},
+        minexptime = 1,
+        maxexptime = 1,
+        minsize = 0,
+        maxsize = 0,
+        collisiondetection = false,
+        glow = 3,
+        node = {name = "rp_mapgen_nodes:border"},
+        playername = name,
+    })
 end
 
 minetest.register_chatcommand("mod_y", {
     description = S("Confirm moderation action"),
     func = function(name, param)
         if confirm_queue[name] then
-            local func = confirm_queue[name]
+            local func = confirm_queue[name][1]
             confirm_queue[name] = nil
             return func()
         end
@@ -61,6 +81,9 @@ minetest.register_chatcommand("mod_n", {
     description = S("Cancel moderation action"),
     func = function(name, param)
         if confirm_queue[name] or get_pos_queue[name] then
+            if confirm_queue[name] and confirm_queue[name][2] then
+                confirm_queue[name][2]()
+            end
             confirm_queue[name] = nil
             get_pos_queue[name] = nil
             return true, minetest.colorize("orange", S("Job cancled."))
@@ -86,7 +109,27 @@ minetest.register_chatcommand("mod_here", {
                 entry.pos[#entry.pos+1] = vector.copy(pos)
                 if #entry.pos >= entry.how_many then
                     get_pos_queue[name] = nil
-                    entry.func(entry.pos)
+                    confirm_queue[name] = {function()
+                        if pos_particlespawner[name] then
+                            minetest.delete_particlespawner(pos_particlespawner[name])
+                            pos_particlespawner[name] = nil
+                        end
+                        return entry.func(entry.pos)
+                    end, function()
+                        if pos_particlespawner[name] then
+                            minetest.delete_particlespawner(pos_particlespawner[name])
+                            pos_particlespawner[name] = nil
+                        end
+                    end}
+                    local action = entry.action
+                    if type(action) == "function" then
+                        action = action(entry.pos)
+                    end
+                    if entry.how_many == 2 then
+                        pos_spawn_particlespawners(name, entry.pos[1], entry.pos[2])
+                    end
+                    return true, minetest.colorize("orange",
+                        S("Are you sure you want to @1? Type /mod_y to confirm, or /mod_n to cancel.", action))
                 end
                 return true
             end
@@ -99,6 +142,10 @@ minetest.register_on_leaveplayer(function(player, timed_out)
     local name = player:get_player_name()
     confirm_queue[name] = nil
     get_pos_queue[name] = nil
+    if pos_particlespawner[name] then
+        minetest.delete_particlespawner(pos_particlespawner[name])
+        pos_particlespawner[name] = nil
+    end
 end)
 
 minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
@@ -115,7 +162,27 @@ minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
             entry.pos[#entry.pos+1] = vector.copy(pos)
             if #entry.pos >= entry.how_many then
                 get_pos_queue[name] = nil
-                entry.func(entry.pos)
+                confirm_queue[name] = {function()
+                    if pos_particlespawner[name] then
+                        minetest.delete_particlespawner(pos_particlespawner[name])
+                        pos_particlespawner[name] = nil
+                    end
+                    return entry.func(entry.pos)
+                end, function()
+                    if pos_particlespawner[name] then
+                        minetest.delete_particlespawner(pos_particlespawner[name])
+                        pos_particlespawner[name] = nil
+                    end
+                end}
+                local action = entry.action
+                if type(action) == "function" then
+                    action = action(entry.pos)
+                end
+                if entry.how_many == 2 then
+                    pos_spawn_particlespawners(name, entry.pos[1], entry.pos[2])
+                end
+                minetest.chat_send_player(name, minetest.colorize("orange",
+                    S("Are you sure you want to @1? Type /mod_y to confirm, or /mod_n to cancel.", action)))
             end
         end
     end
@@ -200,22 +267,21 @@ minetest.register_chatcommand("mod_rm_range", {
     description = S("Remove nodes within a range"),
     privs = {server = true},
     func = function(name, param)
-        return do_get_pos(name, 2, function(pos_list)
-            wrap_send_player(name, do_confirm, name,
-                S("remove nodes within the range @1 to @2",
+        return do_get_pos_confirm(name,
+            function(pos_list)
+                return S("remove nodes within the range @1 to @2",
                     vector.to_string(pos_list[1]),
-                    vector.to_string(pos_list[2])),
-                function()
-                    local minp, maxp = vector.sort(pos_list[1], pos_list[2])
-                    for x = minp.x, maxp.x do
-                        for z = minp.z, maxp.z do
-                            local pos = vector.new(x,1,z)
-                            minetest.set_node(pos, {name = "rp_mapgen_nodes:default_fill"})
-                        end
+                    vector.to_string(pos_list[2]))
+            end, 2, function(pos_list)
+                local minp, maxp = vector.sort(pos_list[1], pos_list[2])
+                for x = minp.x, maxp.x do
+                    for z = minp.z, maxp.z do
+                        local pos = vector.new(x,1,z)
+                        minetest.set_node(pos, {name = "rp_mapgen_nodes:default_fill"})
                     end
-                    return true, minetest.colorize("orange", S("Removed nodes in range."))
-                end)
-        end)
+                end
+                return true, minetest.colorize("orange", S("Removed nodes in range."))
+            end)
     end
 })
 
@@ -235,23 +301,22 @@ minetest.register_chatcommand("mod_set_color", {
         if not rp_nodes.colors[param] then
             return false, S("Color node \"@1\" not found. Try /mod_set_color list",param)
         end
-        return do_get_pos(name, 2, function(pos_list)
-            local nodename = "rp_nodes:color_" .. param
-            wrap_send_player(name, do_confirm, name,
-                S("replace nodes within the range @1 to @2 by @3",
+        local nodename = "rp_nodes:color_" .. param
+        return do_get_pos_confirm(name,
+            function(pos_list)
+                return S("replace nodes within the range @1 to @2 by @3",
                     vector.to_string(pos_list[1]),
                     vector.to_string(pos_list[2]),
-                    minetest.registered_nodes[nodename].description),
-                function()
-                    local minp, maxp = vector.sort(pos_list[1], pos_list[2])
-                    for x = minp.x, maxp.x do
-                        for z = minp.z, maxp.z do
-                            local pos = vector.new(x,1,z)
-                            minetest.set_node(pos, {name = nodename})
-                        end
+                    minetest.registered_nodes[nodename].description)
+            end, 2, function(pos_list)
+                local minp, maxp = vector.sort(pos_list[1], pos_list[2])
+                for x = minp.x, maxp.x do
+                    for z = minp.z, maxp.z do
+                        local pos = vector.new(x,1,z)
+                        minetest.set_node(pos, {name = nodename})
                     end
-                    return true, minetest.colorize("orange", S("Replaced nodes in range."))
-                end)
-        end)
+                end
+                return true, minetest.colorize("orange", S("Replaced nodes in range."))
+            end)
     end
 })
