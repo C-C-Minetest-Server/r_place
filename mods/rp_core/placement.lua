@@ -24,7 +24,6 @@ local deny_clear = {}
 local delay_hud = {}
 
 rp_core.time_delay = tonumber(minetest.settings:get("r_place.delay") or "5") or 5
-rp_core.wear_show_delay = minetest.settings:get_bool("r_place.wear_show_delay", false)
 local time_delay = rp_core.time_delay
 
 local S = minetest.get_translator("rp_core")

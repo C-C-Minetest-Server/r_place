@@ -1,0 +1,8 @@
+# textdomain: rp_random_messages
+
+### init.lua ###
+Punch an existing color node to put it onto your hand.=擊打現有顏色方塊可以將之放置於您的手上。
+You will have to wait for @1 seconds before placing down another node.=放置另一個方塊之前，您需要等待 @1 秒。
+You are allowed to cover up other's works, but try not to do that if you can find empty spaces.=您可以覆蓋別人的畫作，但如果能找到空位則嘗試避免覆蓋。
+Rightclick a pixel to replace it with the color on your hand.=右鍵點擊可以用手上的顏色覆蓋這一像素。
+Use /anal_player to see per-player node placement count.=使用 /anal_player 以獲得玩家方塊放置數量。

@@ -1,0 +1,5 @@
+# textdomain: rp_export_json
+
+### init.lua ###
+Forcely start export to JSON job=強制開始匯出至 JSON
+Job started.=任務已開始。

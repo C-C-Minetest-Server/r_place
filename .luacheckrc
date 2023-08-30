@@ -16,11 +16,13 @@ globals = {
 
 	"minetest", "core",
 
-	"rp_core", "rp_nodes", "rp_analysis", "rp_utils"
+	"rp_core", "rp_nodes", "rp_analysis", "rp_utils",
+	"random_messages_api",
 }
 
 exclude_files = {
 	"utils/",
+	"mods/random_messages_api/"
 }
 
 read_globals = {

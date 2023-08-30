@@ -9,10 +9,13 @@
         "dump",
         "ItemStack",
         "rp_analysis",
-        "rp_utils"
+        "rp_utils",
+        "random_messages_api",
+        "DIR_DELIM"
     ],
     "Lua.workspace.ignoreDir": [
         ".vscode",
-        "utils"
+        "utils",
+        "mods/random_messages_api"
     ]
 }

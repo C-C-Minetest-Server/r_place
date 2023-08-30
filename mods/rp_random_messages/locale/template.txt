@@ -1,0 +1,8 @@
+# textdomain: rp_random_messages
+
+### init.lua ###
+Punch an existing color node to put it onto your hand.=
+You will have to wait for @1 seconds before placing down another node.=
+You are allowed to cover up other's works, but try not to do that if you can find empty spaces.=
+Rightclick a pixel to replace it with the color on your hand.=
+Use /anal_player to see per-player node placement count.=
