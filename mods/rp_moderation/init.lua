@@ -44,25 +44,96 @@ end
 local pos_particlespawner = {}
 local function pos_spawn_particlespawners(name, pos1, pos2)
     pos1, pos2 = vector.sort(pos1, pos2)
-    pos1 = vector.offset(pos1, -0.3, 0.6, -0.3)
-    pos2 = vector.offset(pos2, 0.3, 0.6, 0.3)
-    local area = (pos1.x - pos2.x + 1) * (pos1.y - pos2.y + 1) * (pos1.z - pos2.z + 1) 
-    pos_particlespawner[name] = minetest.add_particlespawner({
-        amount = area * 25,
-        time = 0,
-        minpos = pos1,
-        maxpos = pos2,
-        minacc = {x=0, y=-10, z=0},
-        maxacc = {x=0, y=-13, z=0},
-        minexptime = 1,
-        maxexptime = 1,
-        minsize = 0,
-        maxsize = 0,
-        collisiondetection = false,
-        glow = 3,
-        node = {name = "rp_mapgen_nodes:border"},
-        playername = name,
-    })
+    pos1 = vector.offset(pos1, -0.4, 0.6, -0.4)
+    pos2 = vector.offset(pos2, 0.4, 0.6, 0.4)
+    local sides = {
+        {
+            (pos2.x - pos1.x + 1),
+            vector.new(pos1.x, 1.6, pos1.z),
+            vector.new(pos2.x, 1.6, pos1.z),
+        },
+        {
+            (pos2.x - pos1.x + 1),
+            vector.new(pos1.x, 1.6, pos2.z),
+            vector.new(pos2.x, 1.6, pos2.z),
+        },
+        {
+            (pos2.z - pos1.z + 1),
+            vector.new(pos1.x, 1.6, pos1.z),
+            vector.new(pos1.x, 1.6, pos2.z)
+        },
+        {
+            (pos2.z - pos1.z + 1),
+            vector.new(pos2.x, 1.6, pos1.z),
+            vector.new(pos2.x, 1.6, pos2.z)
+        }
+    }
+    local particles = {}
+    for _, data in ipairs(sides) do
+        particles[#particles+1] = minetest.add_particlespawner({
+            amount = data[1] * 10,
+            time = 0,
+            minpos = data[2],
+            maxpos = data[3],
+            minacc = {x=0, y=-10, z=0},
+            maxacc = {x=0, y=-13, z=0},
+            minexptime = 1,
+            maxexptime = 1,
+            minsize = 0,
+            maxsize = 0,
+            collisiondetection = false,
+            glow = 3,
+            node = {name = "rp_mapgen_nodes:border"},
+            playername = name,
+        })
+        particles[#particles+1] = minetest.add_particlespawner({
+            amount = data[1] * 10,
+            time = 0,
+            minpos = data[2],
+            maxpos = data[3],
+            minacc = {x=0, y=-10, z=0},
+            maxacc = {x=0, y=-13, z=0},
+            minexptime = 1,
+            maxexptime = 1,
+            minsize = 0,
+            maxsize = 0,
+            collisiondetection = false,
+            glow = 3,
+            node = {name = "rp_nodes:color_FFFFFF"},
+            playername = name,
+        })
+    end
+    pos_particlespawner[name] = particles
+end
+
+local function get_pos_do_confirm(name)
+    local entry = get_pos_queue[name]
+    get_pos_queue[name] = nil
+    if pos_particlespawner[name] then
+        for _, id in ipairs(pos_particlespawner[name]) do
+            minetest.delete_particlespawner(id)
+        end
+        pos_particlespawner[name] = nil
+    end
+    confirm_queue[name] = {function()
+        if pos_particlespawner[name] then
+            for _, id in ipairs(pos_particlespawner[name]) do
+                minetest.delete_particlespawner(id)
+            end
+            pos_particlespawner[name] = nil
+        end
+        return entry.func(entry.pos)
+    end, function()
+        if pos_particlespawner[name] then
+            for _, id in ipairs(pos_particlespawner[name]) do
+                minetest.delete_particlespawner(id)
+            end
+            pos_particlespawner[name] = nil
+        end
+    end}
+    if entry.how_many == 2 then
+        pos_spawn_particlespawners(name, entry.pos[1], entry.pos[2])
+    end
 end
 
 minetest.register_chatcommand("mod_y", {
@@ -108,26 +179,11 @@ minetest.register_chatcommand("mod_here", {
                     S("Got position: @1", vector.to_string(pos))))
                 entry.pos[#entry.pos+1] = vector.copy(pos)
                 if #entry.pos >= entry.how_many then
-                    get_pos_queue[name] = nil
-                    confirm_queue[name] = {function()
-                        if pos_particlespawner[name] then
-                            minetest.delete_particlespawner(pos_particlespawner[name])
-                            pos_particlespawner[name] = nil
-                        end
-                        return entry.func(entry.pos)
-                    end, function()
-                        if pos_particlespawner[name] then
-                            minetest.delete_particlespawner(pos_particlespawner[name])
-                            pos_particlespawner[name] = nil
-                        end
-                    end}
                     local action = entry.action
                     if type(action) == "function" then
                         action = action(entry.pos)
                     end
-                    if entry.how_many == 2 then
-                        pos_spawn_particlespawners(name, entry.pos[1], entry.pos[2])
-                    end
+                    get_pos_do_confirm(name)
                     return true, minetest.colorize("orange",
                         S("Are you sure you want to @1? Type /mod_y to confirm, or /mod_n to cancel.", action))
                 end
@@ -143,7 +199,9 @@ minetest.register_on_leaveplayer(function(player, timed_out)
     confirm_queue[name] = nil
     get_pos_queue[name] = nil
     if pos_particlespawner[name] then
-        minetest.delete_particlespawner(pos_particlespawner[name])
+        for _, id in ipairs(pos_particlespawner[name]) do
+            minetest.delete_particlespawner(id)
+        end
         pos_particlespawner[name] = nil
     end
 end)
@@ -161,26 +219,11 @@ minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
                 S("Got position: @1", vector.to_string(pos))))
             entry.pos[#entry.pos+1] = vector.copy(pos)
             if #entry.pos >= entry.how_many then
-                get_pos_queue[name] = nil
-                confirm_queue[name] = {function()
-                    if pos_particlespawner[name] then
-                        minetest.delete_particlespawner(pos_particlespawner[name])
-                        pos_particlespawner[name] = nil
-                    end
-                    return entry.func(entry.pos)
-                end, function()
-                    if pos_particlespawner[name] then
-                        minetest.delete_particlespawner(pos_particlespawner[name])
-                        pos_particlespawner[name] = nil
-                    end
-                end}
                 local action = entry.action
                 if type(action) == "function" then
                     action = action(entry.pos)
                 end
-                if entry.how_many == 2 then
-                    pos_spawn_particlespawners(name, entry.pos[1], entry.pos[2])
-                end
+                get_pos_do_confirm(name)
                 minetest.chat_send_player(name, minetest.colorize("orange",
                     S("Are you sure you want to @1? Type /mod_y to confirm, or /mod_n to cancel.", action)))
             end
