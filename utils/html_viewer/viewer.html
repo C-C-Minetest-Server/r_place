@@ -56,11 +56,12 @@
 			.then(data => {
 				canvas.width = data.x_axis;
 				canvas.height = data.z_axis;
-				var ctx = canvas.getContext("2d");
-				var img = new Image();
-				for (var i = 0; i < data.z_axis; i++) {
-					for (var j = 0; j < data.x_axis; j++) {
-						ctx.fillStyle = "#" + Math.floor(data.map[i][j]).toString(16);
+				const ctx = canvas.getContext("2d");
+				const img = new Image();
+				for (let i = 0; i < data.z_axis; i++) {
+					for (let j = 0; j < data.x_axis; j++) {
+						const c = "000000" + Math.floor(data.map[i][j]).toString(16);
+						ctx.fillStyle = "#" + c.substring(c.length - 6);
 						ctx.fillRect(data.x_axis - j, data.z_axis - i, 1, 1);
 					}
 				}
