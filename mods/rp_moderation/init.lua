@@ -335,8 +335,8 @@ minetest.register_chatcommand("mod_set_color", {
         param = string.upper(param)
         if param == "LIST" or param == "" then
             local rstr = {"--- " .. S("List of node colors") .. " ---"}
-            for hex, name in pairs(rp_nodes.colors) do
-                rstr[#rstr+1] = hex .. ": " .. name
+            for hex, nname in pairs(rp_nodes.colors) do
+                rstr[#rstr+1] = hex .. ": " .. nname
             end
             rstr[#rstr+1] = "--- " .. S("List end") .. " ---"
             return true, table.concat(rstr, "\n")
