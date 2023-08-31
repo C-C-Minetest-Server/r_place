@@ -1,4 +1,9 @@
-## License of the code
+# Licenses of Minetest rPlace
+
+The source codes and media used in rPlace are in different licenses. However, they are all free (as in freedom) to use.
+
+## License of the code (LGPLv2.1+)
+
     Copyright (C) 2023  1F616EMO
 
     This library is free software; you can redistribute it and/or
@@ -15,7 +20,7 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-### License of Optional HTML Viewer
+### License of HTML Viewer Utility (MIT)
 
 This license covers files found in the `utils/html_viewer` file tree.
 
@@ -41,6 +46,14 @@ This license covers files found in the `utils/html_viewer` file tree.
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ## License of media
-All of them are CC BY-SA 4.0 or later unless other specified.
 
-License URl: https://creativecommons.org/licenses/by-sa/4.0/
+All of them are CC BY-SA 4.0 unless other specified. The attribution shoule be "1F616EMO".
+
+License URL: <https://creativecommons.org/licenses/by-sa/4.0/>
+
+However, the following media have different license:
+
+1. `mods/rp_core/sounds/rp_nodes_pop.ogg`, `mods/rp_color_pick/sounds/rp_color_pick_suish_pop.ogg`
+    * Works from Scratch support materieals ("Choose a Sound" from editor menu).
+    * License: [Creative Commons Attribution-ShareAlike 2.0 license (CC BY-SA 2.0)](https://creativecommons.org/licenses/by-sa/2.0/)
+    * Please also see [the related Term of Use of Scratch](https://scratch.mit.edu/terms_of_use#scratch-content).

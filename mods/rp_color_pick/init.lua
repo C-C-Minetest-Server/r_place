@@ -21,6 +21,16 @@
 
 local S = minetest.get_translator("rp_color_pick")
 
+local function play_suish_pop(pname)
+    minetest.sound_play({
+        name = "rp_color_pick_suish_pop",
+        fade = 0,
+        gain = 0.7,
+    }, {
+        to_player = pname,
+    }, true)
+end
+
 minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
     if not puncher:is_player() then return end
     local pname = puncher:get_player_name()
@@ -37,6 +47,7 @@ minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
             puncher:set_wielded_item(new_equip)
             inv:add_item("main", old_wield)
 
+            play_suish_pop(pname)
             minetest.chat_send_player(pname, minetest.colorize("orange", S("Picked @1",def.description)))
         end
     end

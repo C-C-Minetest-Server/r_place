@@ -70,6 +70,14 @@ rp_utils.every_n_seconds(0.5, function()
     end
 end)
 
+local function play_pop(pos)
+    minetest.sound_play({
+        name = "rp_nodes_pop",
+        fade = 0,
+    }, {
+        pos = pos,
+    }, true)
+end
 
 minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
     if not placer:is_player() then return true end
@@ -91,6 +99,7 @@ minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack
         deny[name] = nil
         deny_clear[name] = nil
     end)
+    play_pop(pos)
     return true
 end)
 
