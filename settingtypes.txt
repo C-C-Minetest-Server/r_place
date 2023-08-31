@@ -8,3 +8,11 @@ r_place.area_pos2 (Place area position 2) string (-30,-30)
 
 # Delay between placements in seconds
 r_place.delay (Delay between placements) int 5
+
+# Interval of random announcements in seconds.
+random_messages_api.interval (Random announcement interval) int 60
+
+# Load custom messages from WORLD_PATH/random_messages.txt
+# Write one messages per line.
+# Blank lines or lines starting with an hash are ignored.
+random_messages_api.load_custom_messages (Load custom messages) bool true
