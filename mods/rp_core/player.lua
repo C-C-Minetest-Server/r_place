@@ -43,8 +43,8 @@ local function check_pos(pos)
     if pos.y <= 1 then
         pos.y = 5
         altered = true
-    elseif pos.y > 25 then
-        pos.y = 20
+    elseif pos.y > 105 then
+        pos.y = 100
         altered = true
     end
     if pos.x < (rp_core.area[1][1] - 10) then
