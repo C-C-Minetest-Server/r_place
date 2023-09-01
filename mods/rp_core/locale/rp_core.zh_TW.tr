@@ -4,3 +4,6 @@
 Disable build delay=禁用建築延遲
 @1 seconds left=尚餘 @1 秒
 Placed by: @1=擺放者：@1
+
+### player.lua ###
+How about we explore the area ahead of us later?=前面的區域，以後再來探索吧！

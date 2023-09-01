@@ -19,6 +19,8 @@
     USA
 ]]
 
+local S = minetest.get_translator("rp_core")
+
 function minetest.get_spawn_level(x,z)
     return 10
 end
@@ -97,6 +99,9 @@ rp_utils.every_n_seconds(5, function()
         local npos, altered = check_pos(pos)
 
         if altered then
+            local name = player:get_player_name()
+            minetest.chat_send_player(name, minetest.get_color_escape_sequence("orange") ..
+                S("How about we explore the area ahead of us later?"))
             player:set_pos(npos)
         end
     end

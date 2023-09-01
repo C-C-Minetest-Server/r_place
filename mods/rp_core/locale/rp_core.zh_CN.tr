@@ -1,0 +1,9 @@
+# textdomain: rp_core
+
+### placement.lua ###
+Disable build delay=禁用建筑延迟
+@1 seconds left=尚余 @1 秒
+Placed by: @1=摆放者：@1
+
+### player.lua ###
+How about we explore the area ahead of us later?=前面的区域，以后再来探索吧！
