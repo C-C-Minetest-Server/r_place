@@ -6,4 +6,6 @@ Disable build delay=禁用建筑延迟
 Placed by: @1=摆放者：@1
 
 ### player.lua ###
+Go back to spawnpoint=返回出生点
+Teleported back to spawn.=已返回出生点。
 How about we explore the area ahead of us later?=前面的区域，以后再来探索吧！

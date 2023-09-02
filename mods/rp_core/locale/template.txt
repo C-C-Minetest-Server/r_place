@@ -6,4 +6,6 @@ Disable build delay=
 Placed by: @1=
 
 ### player.lua ###
+Go back to spawnpoint=
+Teleported back to spawn.=
 How about we explore the area ahead of us later?=

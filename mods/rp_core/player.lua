@@ -77,6 +77,16 @@ if not(spawnpoint and spawnpoint ~= "") then
     }
 end
 
+minetest.register_chatcommand("spawn", {
+    description = S("Go back to spawnpoint"),
+    func = function(name, param)
+        local player = minetest.get_player_by_name(name)
+        if not player then return false end
+        player:set_pos(spawnpoint)
+        return true, S("Teleported back to spawn.")
+    end
+})
+
 minetest.register_on_joinplayer(function(player, last_login)
     local name = player:get_player_name()
 
