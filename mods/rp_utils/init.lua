@@ -28,3 +28,36 @@ function rp_utils.every_n_seconds(delay, func)
     end
     minetest.after(1,loop)
 end
+
+do
+    local function iter(state)
+        local pos1, pos2 = state.pos1, state.pos2
+        local rtn = nil
+        if state.pointer then
+            local pointer = state.pointer
+            rtn = vector.copy(pointer)
+            pointer.x = pointer.x + 1
+            if pointer.x > pos2.x then
+                pointer.x = pos1.x
+                pointer.y = pointer.y + 1
+                if pointer.y > pos2.y then
+                    pointer.y = pos1.y
+                    pointer.z = pointer.z + 1
+                    if pointer.z > pos2.z then
+                        state.pointer = nil
+                    end
+                end
+            end
+        end
+        return rtn
+    end
+
+    function rp_utils.vector_range(pos1, pos2)
+        pos1, pos2 = vector.sort(pos1, pos2)
+        local state = {
+            pos1 = pos1, pos2 = pos2,
+            pointer = vector.copy(pos1)
+        }
+        return iter, state
+    end
+end

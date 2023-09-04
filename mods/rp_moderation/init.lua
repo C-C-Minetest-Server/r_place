@@ -269,7 +269,7 @@ do
         func = function(name,param)
             return do_confirm(name, S("erase the entire map"), function()
                 local VM = VoxelManip()
-                local minp, maxp = VM:read_from_map(
+                local minp, maxp = VM:read_from_map({
                     {
                         x = rp_core.area[1][1],
                         y = 1,
@@ -278,7 +278,7 @@ do
                         x = rp_core.area[2][1],
                         y = 1,
                         z = rp_core.area[2][2]
-                    })
+                    }})
                 local VA = VoxelArea(minp, maxp)
                 local data = {}
                 for i in VA:iterp(minp, maxp) do
@@ -316,12 +316,15 @@ minetest.register_chatcommand("mod_rm_range", {
                     vector.to_string(pos_list[1]),
                     vector.to_string(pos_list[2]))
             end, 2, function(pos_list)
-                local minp, maxp = vector.sort(pos_list[1], pos_list[2])
-                for x = minp.x, maxp.x do
-                    for z = minp.z, maxp.z do
-                        local pos = vector.new(x,1,z)
-                        minetest.set_node(pos, {name = "rp_mapgen_nodes:default_fill"})
-                    end
+                -- local minp, maxp = vector.sort(pos_list[1], pos_list[2])
+                -- for x = minp.x, maxp.x do
+                --     for z = minp.z, maxp.z do
+                --         local pos = vector.new(x,1,z)
+                --         minetest.set_node(pos, {name = "rp_mapgen_nodes:default_fill"})
+                --     end
+                -- end
+                for pos in rp_utils.vector_range(pos_list[1], pos_list[2]) do
+                    minetest.set_node(pos, {name = "rp_mapgen_nodes:default_fill"})
                 end
                 return true, minetest.colorize("orange", S("Removed nodes in range."))
             end)
