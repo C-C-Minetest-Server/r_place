@@ -54,11 +54,11 @@ local function check_pos(pos)
         pos.x = rp_core.area[2][1] + 5
         altered = true
     end
-    if pos.y < (rp_core.area[1][2] - 10) then
-        pos.y = rp_core.area[1][2] - 5
+    if pos.z < (rp_core.area[1][2] - 10) then
+        pos.z = rp_core.area[1][2] - 5
         altered = true
-    elseif pos.y > (rp_core.area[2][2] + 10) then
-        pos.y = rp_core.area[2][2] + 5
+    elseif pos.z > (rp_core.area[2][2] + 10) then
+        pos.z = rp_core.area[2][2] + 5
         altered = true
     end
     return pos, altered
