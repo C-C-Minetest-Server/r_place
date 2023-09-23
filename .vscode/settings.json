@@ -12,7 +12,8 @@
         "rp_utils",
         "random_messages_api",
         "DIR_DELIM",
-        "rp_export"
+        "rp_export",
+        "rp_snapshot"
     ],
     "Lua.workspace.ignoreDir": [
         ".vscode",

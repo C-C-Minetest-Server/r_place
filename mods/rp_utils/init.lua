@@ -61,3 +61,16 @@ do
         return iter, state
     end
 end
+
+function rp_utils.sort(num1, num2)
+    if num1 > num2 then
+        return num1, num2
+    end
+    return num2, num1
+end
+
+function rp_utils.sort_2d(pos1, pos2)
+    local minx, maxx = rp_utils.sort(pos1[1], pos2[1])
+    local minz, maxz = rp_utils.sort(pos1[2], pos2[2])
+    return {minx, minz}, {maxx, maxz}
+end
