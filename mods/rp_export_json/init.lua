@@ -20,56 +20,31 @@
 ]]
 
 local S = minetest.get_translator("rp_export_json")
-local color_map = {}
-for hex, _ in pairs(rp_nodes.colors) do
-    color_map[minetest.get_content_id("rp_nodes:color_" .. hex)] = tonumber(hex, 16)
-end
+local WP = minetest.get_worldpath()
 
-local function save(callback)
+local function save()
     minetest.log("action","[rp_export_json] Staring saving to JSON")
-    local VM = VoxelManip()
-    local minp, maxp = VM:read_from_map(
-        {x=rp_core.area[1][1],y=1,z=rp_core.area[1][2]},
-        {x=rp_core.area[2][1],y=1,z=rp_core.area[2][2]}
-    )
-    local data = VM:get_data()
+    local json_data = {}
 
-    ---@diagnostic disable-next-line: redefined-local
-    minetest.handle_async(function(color_map, area, data, minp, maxp) -- luacheck: ignore 431
-        local json_data = {}
-        json_data.x_axis = (area[2][1] - area[1][1] + 1)
-        json_data.z_axis = (area[2][2] - area[1][2] + 1)
-        json_data.map = {}
-        local VA = VoxelArea(minp, maxp)
-        for z = area[1][2], area[2][2] do
-            local x_data = {}
-            for x = area[2][1], area[1][1], -1 do
-                local i = VA:index(x,1,z)
-                local id = data[i]
-                x_data[#x_data+1] = color_map[id] or 0
-            end
-            json_data.map[#json_data.map+1] = x_data
-        end
+    json_data.x_axis = (rp_core.area[2][1] - rp_core.area[1][1] + 1)
+    json_data.z_axis = (rp_core.area[2][2] - rp_core.area[1][2] + 1)
+    json_data.map = {{}}
 
-        local json = minetest.write_json(json_data)
-        local WP = minetest.get_worldpath()
-        minetest.safe_file_write(WP .. "/r_place.json", json)
-    end, function(...)
-        minetest.log("action","[rp_export_json] Done saving to JSON")
-        if callback then
-            callback(...)
+    local curr_map_row_id = 1
+    for x in rp_export.get_area_iterator(rp_core.area[1], rp_core.area[2], false) do
+        if #json_data.map[curr_map_row_id] >= json_data.x_axis then
+            curr_map_row_id = curr_map_row_id + 1
+            json_data.map[curr_map_row_id] = {}
         end
-    end, color_map, rp_core.area, data, minp, maxp)
+        local curr_map_row = json_data.map[curr_map_row_id]
+        curr_map_row[#curr_map_row + 1] = x.color or 0x000000
+    end
+
+    local json = minetest.write_json(json_data)
+    minetest.safe_file_write(WP .. "/r_place.json", json)
 end
 
--- Involves async - do not use rp_utils!
-local function loop()
-    save(function()
-        minetest.after(60, loop)
-    end)
-end
-
-minetest.after(1,loop)
+rp_utils.every_n_seconds(60, save)
 
 minetest.register_chatcommand("json_force_export", {
     description = S("Forcely start export to JSON job"),

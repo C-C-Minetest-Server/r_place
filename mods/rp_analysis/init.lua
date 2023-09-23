@@ -31,18 +31,13 @@ rp_analysis.renew_cache = function()
         by_player = {}, -- "" == Unknown
         by_color = {},
     }
-    for x = rp_core.area[1][1], rp_core.area[2][1] do
-        for z = rp_core.area[1][2], rp_core.area[2][2] do
-            local pos = vector.new(x,1,z)
-
-            local node = minetest.get_node(pos)
-            local nname = node.name
-            cache.by_color[nname] = (cache.by_color[nname] or 0) + 1
-
-            local meta = minetest.get_meta(pos)
-            local pname = meta:get_string("placer")
-            cache.by_player[pname] = (cache.by_player[pname] or 0) + 1
+    for x in rp_export.get_area_iterator(rp_core.area[1], rp_core.area[2], true) do
+        local name = x.name
+        local placer = x.placer
+        if name then
+            cache.by_color[name] = (cache.by_color[name] or 0) + 1
         end
+        cache.by_player[placer] = (cache.by_player[placer] or 0) + 1
     end
     rp_analysis.cache = cache
     rp_analysis.renewed_time = os.time()

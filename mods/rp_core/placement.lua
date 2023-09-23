@@ -92,6 +92,7 @@ minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack
         deny_clear[name]:cancel()
     end
     if minetest.check_player_privs(name, {no_delay = true}) then
+        play_pop(pos)
         return true
     end
     deny[name] = os.time()
