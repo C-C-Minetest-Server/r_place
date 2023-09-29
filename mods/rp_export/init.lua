@@ -48,3 +48,15 @@ function rp_export.encode_png(minp, maxp)
     return minetest.encode_png(width, height, data)
 end
 
+function rp_export.encode_png_from_area(area)
+    ---@diagnostic disable-next-line: undefined-field
+    area = table.copy(area)
+
+    local width = area.len_x
+    local height = area.len_y
+    area.len_x = nil
+    area.len_y = nil
+
+    return minetest.encode_png(width, height, area)
+end
+

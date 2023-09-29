@@ -95,7 +95,8 @@ minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
                     minetest.colorize("orange", S("The snapshot will be alive for 5 minutes or until you leave.")))
             else
                 minetest.chat_send_player(name,
-                    minetest.colorize("orange", S("Snapshot saving failed. Please try again, or delete some snapshots.")))
+                    minetest.colorize("orange",
+                        S("Snapshot saving failed. Please try again, or delete some snapshots.")))
             end
             selecting[name]  = nil
         end
