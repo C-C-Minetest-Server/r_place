@@ -40,7 +40,7 @@ local inventory_formspec = table.concat({
 local function check_pos(pos)
     pos = vector.copy(pos)
     local altered = false
-    if pos.y <= 1 then
+    if pos.y <= -1 then
         pos.y = 5
         altered = true
     elseif pos.y > 105 then
