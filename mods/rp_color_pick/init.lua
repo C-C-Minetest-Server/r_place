@@ -31,9 +31,17 @@ local function play_suish_pop(pname)
     }, true)
 end
 
+local cooldowns = {}
+local MINIMUM_COOLDOWN = 0.2
+
 minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
     if not puncher:is_player() then return end
     local pname = puncher:get_player_name()
+
+    if cooldowns[pname] then
+        return
+    end
+
     local nname = node.name
     local old_wield = puncher:get_wielded_item()
     if old_wield:get_name() == nname then return end
@@ -49,6 +57,16 @@ minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
 
             play_suish_pop(pname)
             minetest.chat_send_player(pname, minetest.colorize("orange", S("Picked @1",def.description)))
+
+            cooldowns[pname] = minetest.after(MINIMUM_COOLDOWN, function()
+                cooldowns[pname] = nil
+            end)
         end
     end
+end)
+
+minetest.register_on_leaveplayer(function(player)
+    local name = player:get_player_name()
+    cooldowns[name]:cancel()
+    cooldowns[name] = nil
 end)
