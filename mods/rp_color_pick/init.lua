@@ -67,6 +67,8 @@ end)
 
 minetest.register_on_leaveplayer(function(player)
     local name = player:get_player_name()
-    cooldowns[name]:cancel()
-    cooldowns[name] = nil
+    if cooldowns[name] then
+        cooldowns[name]:cancel()
+        cooldowns[name] = nil
+    end
 end)
